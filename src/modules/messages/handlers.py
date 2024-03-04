@@ -1,13 +1,13 @@
-from modules.models.dto import SignalMessage
+from models.dto import SignalMessage
+from modules.messages.parsers import MessageParser
 from modules.orders.orders_service import OrderService
-from modules.parser.message_parser import MessageParser
 
 
 class MessageHandler:
     def __init__(
         self,
-        message_parser: MessageParser = MessageParser(),
-        order_service: OrderService = OrderService(),
+        message_parser: MessageParser,
+        order_service: OrderService,
     ):
         super().__init__()
         self.message_parser = message_parser
@@ -16,3 +16,6 @@ class MessageHandler:
     async def handle(self, message: SignalMessage):
         signal = self.message_parser.get_signal(message)
         self.order_service.make_order_by_signal(signal)
+
+
+message_handler = MessageHandler(MessageParser(), OrderService())

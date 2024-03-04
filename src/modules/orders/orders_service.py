@@ -1,8 +1,9 @@
-from modules.models.dto import BaseSignal
-from modules.orders.orders_strategies import OrderStrategy
+from models.dto import BaseSignal
 
 
 class OrderService:
     def make_order_by_signal(self, signal: BaseSignal):
-        if strategy := OrderStrategy.get_strategy_by_signal(signal):
-            strategy.create_order()
+        pass
+        # TODO check if some order already exits
+        # TODO create order
+        # TODO send order to bybit

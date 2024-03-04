@@ -1,6 +1,6 @@
 import re
 
-from modules.models.dto import (
+from models.dto import (
     SignalOrder,
     SignalOrderType,
     SignalMessage,

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import abstractmethod
 
-from modules.models.dto import SignalOrder, BaseSignal, EntrySignal, TakeProfitSignal
+from models.dto import SignalOrder, BaseSignal, EntrySignal, TakeProfitSignal
 
 
 class OrderStrategy:

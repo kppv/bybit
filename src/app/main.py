@@ -3,11 +3,10 @@ from pyrogram import Client
 from pyrogram.types import Message
 
 from conf.settings import settings
-from modules.handler.message_handler import MessageHandler
-from modules.models.dto import SignalMessage
+from models.dto import SignalMessage
+from modules.messages.handlers import message_handler
 
 app = Client("my_account", settings.api_id, settings.api_hash)
-message_handler = MessageHandler()
 
 
 @app.on_message()

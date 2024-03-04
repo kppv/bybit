@@ -1,10 +1,10 @@
 from messages_data import *
-from modules.models.dto import (
+from models.dto import (
     SignalOrderType,
     SignalMessage,
     TakeProfitSignal,
 )
-from modules.parser.message_parser import MessageParser
+from modules.messages.parsers import MessageParser
 
 MSG = """
 👉 Pair: KAVA/USDT

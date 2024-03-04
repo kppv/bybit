@@ -1,5 +1,5 @@
 from messages_data import *
-from modules.models.dto import SignalMessage
+from models.dto import SignalMessage
 
 
 def test_signal_message():
