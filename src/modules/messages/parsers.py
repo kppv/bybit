@@ -66,3 +66,6 @@ class MessageParser:
         pattern = r"Average Entry Price: ([\d.]+)"
         match = re.search(pattern, text)
         return match.group(1)
+
+
+message_parser = MessageParser()

@@ -7,3 +7,6 @@ class OrderService:
         # TODO check if some order already exits
         # TODO create order
         # TODO send order to bybit
+
+
+order_service = OrderService()
