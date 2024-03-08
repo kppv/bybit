@@ -22,10 +22,10 @@ class TakeProfitStrategy(OrderStrategy):
 
 
 __STRATEGIES = {
-    EntrySignal: EntryStrategy(),
-    TakeProfitSignal: OrderStrategy(),
+    EntrySignal: EntryStrategy,
+    TakeProfitSignal: TakeProfitStrategy,
 }
 
 
 def get_strategy_by_signal(signal):
-    return __STRATEGIES[type(signal)]
+    return __STRATEGIES[type(signal)]()
