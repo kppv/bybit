@@ -1,6 +1,6 @@
 from models.dto import EntrySignal, SignalOrder, SignalOrderType, TakeProfitSignal
 from modules.orders.orders_strategies import (
-    get_strategy_by_signal,
+    get_strategy,
     EntryStrategy,
     TakeProfitStrategy,
 )
@@ -18,7 +18,7 @@ def test_strategy_is_entry():
         ),
     )
 
-    strategy = get_strategy_by_signal(signal)
+    strategy = get_strategy(signal, None)
 
     assert type(strategy) is EntryStrategy
 
@@ -35,6 +35,6 @@ def test_strategy_is_take_profit():
         ),
     )
 
-    strategy = get_strategy_by_signal(signal)
+    strategy = get_strategy(signal, None)
 
     assert type(strategy) is TakeProfitStrategy

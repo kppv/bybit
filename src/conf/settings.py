@@ -8,8 +8,12 @@ class Settings(BaseSettings):
     api_hash: str
     chat_id: str
 
+    bybit_url: str
+    bybit_apikey: str
+    bybit_secret: str
+
     class Config:
-        env_file = ".envs/dev.env"
+        env_file = ".envs/.env"
 
 
 @lru_cache

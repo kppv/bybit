@@ -36,3 +36,39 @@ class EntrySignal(BaseSignal):
 
 class TakeProfitSignal(BaseSignal):
     target: int
+
+
+class Position(BaseModel):
+    symbol: str | None = None
+    leverage: str | None = None
+    autoAddMargin: int | None = None
+    avgPrice: str | None = None
+    liqPrice: str | None = None
+    riskLimitValue: str | None = None
+    takeProfit: str | None = None
+    positionValue: str | None = None
+    isReduceOnly: bool | None = None
+    tpslMode: str | None = None
+    riskId: int | None = None
+    trailingStop: str | None = None
+    unrealisedPnl: str | None = None
+    markPrice: str | None = None
+    adlRankIndicator: int | None = None
+    cumRealisedPnl: str | None = None
+    positionMM: str | None = None
+    createdTime: str | None = None
+    positionIdx: int | None = None
+    positionIM: str | None = None
+    seq: int | None = None
+    updatedTime: str | None = None
+    side: str | None = None
+    bustPrice: str | None = None
+    positionBalance: str | None = None
+    leverageSysUpdatedTime: str | None = None
+    curRealisedPnl: str | None = None
+    size: str | None = None
+    positionStatus: str | None = None
+    mmrSysUpdatedTime: str | None = None
+    stopLoss: str | None = None
+    tradeMode: int | None = None
+    sessionAvgPrice: str | None = None
