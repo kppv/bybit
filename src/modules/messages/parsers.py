@@ -16,7 +16,10 @@ class MessageParser:
         try:
             if "Take-Profit target" in message.text:
                 return MessageParser.parse_take_profit_signal(message)
-            elif "All entry targets achieved" in message.text:
+            elif any(
+                keyword.lower() in message.text.lower()
+                for keyword in ("all entry targets achieved", "start")
+            ):
                 return MessageParser.parse_entry_signal(message)
         except Exception as e:
             return None
@@ -63,9 +66,12 @@ class MessageParser:
 
     @staticmethod
     def __find_price(text):
-        pattern = r"Average Entry Price: ([\d.]+)"
-        match = re.search(pattern, text)
-        return match.group(1)
+        try:
+            pattern = r"Average Entry Price: ([\d.]+)"
+            match = re.search(pattern, text)
+            return match.group(1)
+        except Exception as e:
+            return 0
 
 
 message_parser = MessageParser()
