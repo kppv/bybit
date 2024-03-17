@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".envs/.env")
+    model_config = SettingsConfigDict(env_file=".envs/dev.env")
 
     api_id: str
     api_hash: str

@@ -16,4 +16,6 @@ async def handler(client: Client, message: Message):
         await handle_signal(SignalMessage.from_orm(message))
 
 
-app.run()
+if __name__ == "__main__":
+    logger.info(f"Started with settings: {settings.json()}")
+    app.run()

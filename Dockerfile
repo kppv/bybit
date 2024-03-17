@@ -7,8 +7,7 @@ ENV \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
-    PIP_DEFAULT_TIMEOUT=100 \
-    PYTHONPATH=${APP_NAME}
+    PIP_DEFAULT_TIMEOUT=100
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends curl libpq-dev gcc libc6-dev build-essential && \
@@ -21,5 +20,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 COPY . .
+
+ENV PYTHONPATH=/${APP_NAME}/src
 
 CMD ["python", "src/app/main.py"]
