@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     default_quantity_percent: float = Field(alias="DEFAULT_QNTY_PRCNT")
 
     class Config:
-        env_file = ".envs/.env"
+        env_file = "../.envs/.env"
 
 
 @lru_cache
