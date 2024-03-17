@@ -1,5 +1,7 @@
 import re
 
+from loguru import logger
+
 from conf.settings import settings
 from models.dto import (
     SignalOrder,
@@ -23,6 +25,7 @@ class MessageParser:
             ):
                 return MessageParser.parse_entry_signal(message)
         except Exception as e:
+            logger.error(f"Error while parsing message: {e}")
             return None
 
     @staticmethod
@@ -31,17 +34,17 @@ class MessageParser:
         signal_data = {}
         for line in lines:
             if "Pair:" in line:
-                signal_data["pair"] = line.split(": ")[1].replace("/", "")
+                signal_data["pair"] = line.split(":")[1].strip().replace("/", "")
             elif "Type:" in line:
-                signal_data["type"] = OrderType(line.split(": ")[1])
+                signal_data["type"] = OrderType(line.split(":")[1].strip())
             elif "Entry:" in line:
-                signal_data["entry"] = float(line.split(": ")[1])
+                signal_data["entry"] = float(line.split(":")[1].strip())
             elif "Stop:" in line:
-                signal_data["stop"] = float(line.split(": ")[1])
+                signal_data["stop"] = float(line.split(":")[1].strip())
             elif "Take Profit" in line:
                 if "profits" not in signal_data:
                     signal_data["profits"] = []
-                signal_data["profits"].append(float(line.split(": ")[1]))
+                signal_data["profits"].append(float(line.split(":")[1].strip()))
 
         return SignalOrder(**signal_data)
 

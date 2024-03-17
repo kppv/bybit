@@ -93,3 +93,4 @@ class Order(BaseModel):
     qty: float
     take_profit: float | None = None
     stop_loss: float | None = None
+    leverage: float = 1

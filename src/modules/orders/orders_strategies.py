@@ -25,22 +25,22 @@ class OrderStrategy(ABC):
         )
 
     @abstractmethod
-    def create_order(self):
+    def create_order(self) -> Order | None:
         pass
 
 
 class EntryStrategy(OrderStrategy):
-    balance = None
+    balance: float = None
 
     def create_order(self):
         if positions := self.__get_open_positions():
-            logger.info(
+            logger.warning(
                 f"There are open positions: {[position.symbol for position in positions]}"
             )
             return None
         else:
-            self.balance = self.client.get_balance()
-            self.__place_order()
+            self.__get_balance()
+            return self.__place_order()
 
     def __get_open_positions(self) -> list[Position]:
         return self.client.get_open_positions()
@@ -48,13 +48,22 @@ class EntryStrategy(OrderStrategy):
     def __place_order(self):
         order = Order(
             category=OrderCategory.LINEAR,
-            pair="1000PEPEUSDT",
+            pair=self.signal.order.pair,
             type=OrderType.BUY,
-            qty="3",
-            take_profit=0.0085703,
-            stop_loss=0.0065703,
+            qty=self.__calculate_quantity(),
+            take_profit=self.signal.order.profits[self.signal.tp_target - 1],
+            stop_loss=self.signal.order.stop,
         )
         self.client.place_order(order)
+        return order
+
+    def __calculate_quantity(self) -> float:
+        usdt = (self.balance * self.signal.quantity_percent) / 100
+        return int(usdt / self.signal.order.entry)
+
+    def __get_balance(self):
+        self.balance = float(self.client.get_balance())
+        logger.info(f"Available balance: {self.balance}")
 
 
 class TakeProfitStrategy(OrderStrategy):
