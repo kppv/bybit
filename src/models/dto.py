@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from enum import Enum
+from enum import Enum, StrEnum
 
 from pydantic import BaseModel, ConfigDict
 
@@ -13,14 +13,24 @@ class SignalMessage(BaseModel):
     reply_to_message: SignalMessage | None = None
 
 
-class SignalOrderType(str, Enum):
+class OrderType(str, Enum):
     BUY = ("BUY",)
     SELL = ("SELL",)
 
 
+class OrderCategory(StrEnum):
+    LINEAR = ("LINEAR",)
+    SPOT = ("SPOT",)
+
+
+class OrderCategory(StrEnum):
+    LINEAR = ("LINEAR",)
+    SPOT = ("SPOT",)
+
+
 class SignalOrder(BaseModel):
     pair: str
-    type: SignalOrderType
+    type: OrderType
     entry: float
     profits: list[float]
     stop: float
@@ -32,6 +42,8 @@ class BaseSignal(BaseModel):
 
 class EntrySignal(BaseSignal):
     price: float
+    tp_target: int
+    quantity_percent: float
 
 
 class TakeProfitSignal(BaseSignal):
@@ -72,3 +84,12 @@ class Position(BaseModel):
     stopLoss: str | None = None
     tradeMode: int | None = None
     sessionAvgPrice: str | None = None
+
+
+class Order(BaseModel):
+    pair: str
+    category: OrderCategory
+    type: OrderType
+    qty: float
+    take_profit: float | None = None
+    stop_loss: float | None = None

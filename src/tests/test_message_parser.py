@@ -1,6 +1,6 @@
 from messages_data import *
 from models.dto import (
-    SignalOrderType,
+    OrderType,
     SignalMessage,
     TakeProfitSignal,
 )
@@ -24,7 +24,7 @@ MSG = """
 def test_parse_signal_order():
     signal = MessageParser.parse_signal_order(MSG)
     assert signal.pair == "KAVAUSDT"
-    assert signal.type == SignalOrderType.BUY
+    assert signal.type == OrderType.BUY
     assert signal.entry == 0.9717
     assert signal.stop == 0.893964
     assert signal.profits == [0.991134, 1.010568, 1.049436, 1.088304]
@@ -35,7 +35,7 @@ def test_parse_take_profit_signal():
         SignalMessage(**TAKE_PROFIT_MESSAGE)
     )
     assert take_profit.order.pair == "GALAUSDT"
-    assert take_profit.order.type == SignalOrderType.BUY
+    assert take_profit.order.type == OrderType.BUY
     assert take_profit.order.entry == 0.0459
     assert take_profit.order.stop == 0.042228
     assert take_profit.order.profits == [0.046818, 0.047736, 0.049572, 0.051408]
@@ -45,11 +45,25 @@ def test_parse_take_profit_signal():
 def test_parse_entry_signal():
     entry = MessageParser.parse_entry_signal(SignalMessage(**ENTRY_SIGNAL_MESSAGE))
     assert entry.order.pair == "GALAUSDT"
-    assert entry.order.type == SignalOrderType.BUY
+    assert entry.order.type == OrderType.BUY
     assert entry.order.entry == 0.0459
     assert entry.order.stop == 0.042228
     assert entry.order.profits == [0.046818, 0.047736, 0.049572, 0.051408]
     assert entry.price == 0.7031
+
+
+def test_parse_custom_entry_signal():
+    msg = ENTRY_SIGNAL_MESSAGE.copy()
+    msg["text"] = "start 3 54"
+    entry = MessageParser.parse_entry_signal(SignalMessage(**msg))
+    assert entry.order.pair == "GALAUSDT"
+    assert entry.order.type == OrderType.BUY
+    assert entry.order.entry == 0.0459
+    assert entry.order.stop == 0.042228
+    assert entry.order.profits == [0.046818, 0.047736, 0.049572, 0.051408]
+    assert entry.price == 0
+    assert entry.tp_target == 3
+    assert entry.quantity_percent == 54
 
 
 def test_message_is_take_profit_signal():

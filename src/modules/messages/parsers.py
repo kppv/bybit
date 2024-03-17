@@ -1,8 +1,9 @@
 import re
 
+from conf.settings import settings
 from models.dto import (
     SignalOrder,
-    SignalOrderType,
+    OrderType,
     SignalMessage,
     TakeProfitSignal,
     EntrySignal,
@@ -32,7 +33,7 @@ class MessageParser:
             if "Pair:" in line:
                 signal_data["pair"] = line.split(": ")[1].replace("/", "")
             elif "Type:" in line:
-                signal_data["type"] = SignalOrderType(line.split(": ")[1])
+                signal_data["type"] = OrderType(line.split(": ")[1])
             elif "Entry:" in line:
                 signal_data["entry"] = float(line.split(": ")[1])
             elif "Stop:" in line:
@@ -55,14 +56,21 @@ class MessageParser:
     @staticmethod
     def parse_entry_signal(message: SignalMessage) -> EntrySignal:
         order = MessageParser.parse_signal_order(message.reply_to_message.text)
-        entry = EntrySignal(order=order, price=MessageParser.__find_price(message.text))
+        entry = EntrySignal(
+            tp_target=MessageParser.__find_target(message.text),
+            order=order,
+            price=MessageParser.__find_price(message.text),
+            quantity_percent=MessageParser.__find_quantity(message.text),
+        )
         return entry
 
     @staticmethod
     def __find_target(text):
-        pattern = r"Take-Profit target (\d+)"
-        match = re.search(pattern, text)
-        return match.group(1)
+        patterns = [r"Take-Profit target (\d+)", r"start (\d+)"]
+        for pattern in patterns:
+            if match := re.search(pattern, text):
+                return match.group(1)
+        return 1
 
     @staticmethod
     def __find_price(text):
@@ -72,6 +80,13 @@ class MessageParser:
             return match.group(1)
         except Exception as e:
             return 0
+
+    @staticmethod
+    def __find_quantity(text):
+        pattern = r"start (\d+) (\d+)"
+        if match := re.search(pattern, text):
+            return match.group(2)
+        return settings.default_quantity_percent
 
 
 message_parser = MessageParser()

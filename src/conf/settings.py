@@ -1,5 +1,6 @@
 from functools import lru_cache
 
+from pydantic import Field
 from pydantic_settings import BaseSettings
 
 
@@ -11,6 +12,8 @@ class Settings(BaseSettings):
     bybit_url: str
     bybit_apikey: str
     bybit_secret: str
+
+    default_quantity_percent: float = Field(alias="DEFAULT_QNTY_PRCNT")
 
     class Config:
         env_file = ".envs/.env"

@@ -12,7 +12,10 @@ class OrderService:
 
     def make_order_by_signal(self, signal: BaseSignal):
         strategy = get_strategy(signal, self.client)
-        strategy.create_order()
+        if result := strategy.create_order():
+            logger.info(f"Order was created: {result}")
+        else:
+            logger.info("No order was created")
 
 
 order_service = OrderService(client=bybit_client)

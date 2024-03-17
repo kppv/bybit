@@ -1,4 +1,4 @@
-from models.dto import EntrySignal, SignalOrder, SignalOrderType, TakeProfitSignal
+from models.dto import EntrySignal, SignalOrder, OrderType, TakeProfitSignal
 from modules.orders.orders_strategies import (
     get_strategy,
     EntryStrategy,
@@ -9,9 +9,11 @@ from modules.orders.orders_strategies import (
 def test_strategy_is_entry():
     signal = EntrySignal(
         price=0.7031,
+        tp_target=1,
+        quantity_percent=10,
         order=SignalOrder(
             pair="GALAUSDT",
-            type=SignalOrderType.BUY,
+            type=OrderType.BUY,
             entry=0.0459,
             stop=0.042228,
             profits=[0.046818, 0.047736, 0.049572, 0.051408],
@@ -28,7 +30,7 @@ def test_strategy_is_take_profit():
         target=100,
         order=SignalOrder(
             pair="GALAUSDT",
-            type=SignalOrderType.BUY,
+            type=OrderType.BUY,
             entry=0.0459,
             stop=0.042228,
             profits=[0.046818, 0.047736, 0.049572, 0.051408],
