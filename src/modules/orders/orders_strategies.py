@@ -40,6 +40,7 @@ class EntryStrategy(OrderStrategy):
             return None
         else:
             self.__get_balance()
+            self.__set_leverage()
             return self.__place_order()
 
     def __get_open_positions(self) -> list[Position]:
@@ -64,6 +65,9 @@ class EntryStrategy(OrderStrategy):
     def __get_balance(self):
         self.balance = float(self.client.get_balance())
         logger.info(f"Available balance: {self.balance}")
+
+    def __set_leverage(self):
+        self.client.set_leverage(self.signal.order.pair, self.signal.order.leverage)
 
 
 class TakeProfitStrategy(OrderStrategy):

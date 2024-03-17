@@ -34,6 +34,7 @@ class SignalOrder(BaseModel):
     entry: float
     profits: list[float]
     stop: float
+    leverage: int
 
 
 class BaseSignal(BaseModel):

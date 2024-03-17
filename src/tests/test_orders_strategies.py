@@ -17,6 +17,7 @@ def test_strategy_is_entry():
             entry=0.0459,
             stop=0.042228,
             profits=[0.046818, 0.047736, 0.049572, 0.051408],
+            leverage=10,
         ),
     )
 
@@ -34,6 +35,7 @@ def test_strategy_is_take_profit():
             entry=0.0459,
             stop=0.042228,
             profits=[0.046818, 0.047736, 0.049572, 0.051408],
+            leverage=10,
         ),
     )
 

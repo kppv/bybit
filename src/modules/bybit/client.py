@@ -52,6 +52,14 @@ class ByBitClient(ExchangeClient):
             return None
         return response
 
+    def set_leverage(self, pair: str, leverage: int):
+        self.session.set_leverage(
+            symbol=pair,
+            buyLeverage=str(leverage),
+            sellLeverage=str(leverage),
+            category="linear",
+        )
+
     @staticmethod
     def __covert_type_to_side(order_type: str) -> str:
         if order_type == "BUY":

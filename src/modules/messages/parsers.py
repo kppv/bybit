@@ -37,6 +37,8 @@ class MessageParser:
                 signal_data["pair"] = line.split(":")[1].strip().replace("/", "")
             elif "Type:" in line:
                 signal_data["type"] = OrderType(line.split(":")[1].strip())
+            elif "Leverage:" in line:
+                signal_data["leverage"] = line.split(":")[1].strip().replace("x", "")
             elif "Entry:" in line:
                 signal_data["entry"] = float(line.split(":")[1].strip())
             elif "Stop:" in line:

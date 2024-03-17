@@ -28,6 +28,7 @@ def test_parse_signal_order():
     assert signal.entry == 0.9717
     assert signal.stop == 0.893964
     assert signal.profits == [0.991134, 1.010568, 1.049436, 1.088304]
+    assert signal.leverage == 20
 
 
 def test_parse_take_profit_signal():
