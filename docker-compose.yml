@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+
+  bybit_bot:
+    container_name: bybit_bot
+    build:
+      dockerfile: Dockerfile
+    labels:
+      logging: "promtail"
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    volumes:
+      - ./.grafana/grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasources.yaml
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=Qf9efT
+
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - 3100:3100
+    command: -config.file=/etc/loki/local-config.yaml
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - ./.grafana/promtail.yaml:/etc/promtail/docker-config.yaml
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: -config.file=/etc/promtail/docker-config.yaml
+    depends_on:
+      - loki
