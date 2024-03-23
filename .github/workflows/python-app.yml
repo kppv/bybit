@@ -23,7 +23,6 @@ jobs:
           mkdir -p ~/.ssh/
           echo "${{ secrets.SECRET_KEY }}" > ~/.ssh/id_rsa
           echo "${{ secrets.PUB_KEY }}" > ~/.ssh/id_rsa.pub
-#          chmod 600 ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa.pub
           ssh-keyscan -H ${{ secrets.IP }} >> ~/.ssh/known_hosts
       - name: mkdir
