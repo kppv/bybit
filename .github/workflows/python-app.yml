@@ -1,7 +1,4 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
-name: Python application
+name: Build and Deploy
 
 on:
   push:
@@ -14,9 +11,26 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Test with pytest
+        run: |
+          cd src
+          pytest
 
+  deploy:
+    needs:
+      - build
+    runs-on: ubuntu-latest
     steps:
       - name: Setup SSH
         run: |
@@ -26,4 +40,4 @@ jobs:
           ssh-keyscan -H ${{ secrets.IP }} >> ~/.ssh/known_hosts
       - name: mkdir
         run: |
-          ssh ${{ secrets.USER_IP }} "mkdir /opt/123"
+          ssh ${{ secrets.USER_IP }} "echo Hello"
