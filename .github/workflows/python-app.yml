@@ -41,15 +41,3 @@ jobs:
       - name: clone
         run: |
           ssh -p ${{ secrets.PORT }} ${{ secrets.USER_IP }} "mkdir -p /opt/bybit"
-          ssh -p ${{ secrets.PORT }} ${{ secrets.USER_IP }} "git -C /opt/bybit pull || git clone https://github.com/kppv/bybit.git /opt/bybit"
-      - name: run
-        run: |          
-          ssh -p ${{ secrets.PORT }} ${{ secrets.USER_IP }} bash -c " \
-          echo "Start"; \
-          export APP_ID=${{ secrets.APP_ID }}; \
-          export API_HASH=${{ secrets.API_HASH }}; \
-          export CHAT_ID=${{ secrets.CHAT_ID }}; \
-          export BYBIT_APIKEY=${{ secrets.BYBIT_APIKEY }}; \
-          export BYBIT_SECRET=${{ secrets.BYBIT_SECRET }}; \
-          cd /opt/bybit && docker compose up --build -d; \
-          "
