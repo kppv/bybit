@@ -11,7 +11,7 @@ app = Client(name="my_account", api_id=settings.app_id, api_hash=settings.api_ha
 
 @app.on_message()
 async def handler(client: Client, message: Message):
-    if message.chat.id == int(settings.chat_id):
+    if message.chat.id == int(settings.chat_id) and not message.forward_from_chat:
         logger.info(f"Message from {message.chat.id}: {message.text}")
         await handle_signal(message, SignalMessage.from_orm(message))
 
