@@ -13,7 +13,7 @@ class OrderService:
     def make_order_by_signal(self, signal: BaseSignal) -> Order:
         strategy = get_strategy(signal, self.client)
         try:
-            logger.info(f"Strategy [{strategy.__name__}] try to create order")
+            logger.info(f"Strategy [{type(strategy).__name__}] try to create order")
             result = strategy.create_order()
             logger.info(f"Order was created: {result}")
         except Exception as e:
