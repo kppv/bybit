@@ -45,13 +45,12 @@ jobs:
       - name: run
         run: |          
           ssh ${{ secrets.USER_IP }} bash -c " \
-          cd /opt/bybit; \
           export API_ID=${{ secrets.API_ID }}; \
           export API_HASH=${{ secrets.API_HASH }}; \
           export CHAT_ID=${{ secrets.CHAT_ID }}; \
           export BYBIT_APIKEY=${{ secrets.BYBIT_APIKEY }}; \
           export BYBIT_SECRET=${{ secrets.BYBIT_SECRET }}; \
-          pwd
+          cd /opt/bybit && pwd; \
           echo \$API_ID
           "
           
