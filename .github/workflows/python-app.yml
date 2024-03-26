@@ -52,4 +52,4 @@ jobs:
           ssh ${{ secrets.USER_IP }} "export BYBIT_APIKEY=${{ secrets.BYBIT_APIKEY }}"
           ssh ${{ secrets.USER_IP }} "export BYBIT_SECRET=${{ secrets.BYBIT_SECRET }}"
           
-          ssh ${{ secrets.USER_IP }} "docker-compose up --build -d"
+          ssh ${{ secrets.USER_IP }} "pwd"
