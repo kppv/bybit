@@ -16,7 +16,7 @@ async def handle_signal(origin: Message, message: SignalMessage):
             )
         except Exception as e:
             await origin.reply(
-                text=f"Order was not created. See logs {e}",
+                text=f"Order was not created\n```\n{e}\n```",
                 reply_to_message_id=origin.id,
             )
     else:
