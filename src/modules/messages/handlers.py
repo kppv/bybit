@@ -8,15 +8,16 @@ from modules.orders.orders_service import order_service
 
 async def handle_signal(origin: Message, message: SignalMessage):
     if signal := message_parser.get_signal(message):
-        result = order_service.make_order_by_signal(signal)
-        if result:
+        try:
+            result = order_service.make_order_by_signal(signal)
             await origin.reply(
                 text=f"Order was created:\n```json\n{result.json()}\n```",
                 reply_to_message_id=origin.id,
             )
-        else:
+        except Exception as e:
             await origin.reply(
-                text="Order was not created. See logs", reply_to_message_id=origin.id
+                text=f"Order was not created. See logs {e}",
+                reply_to_message_id=origin.id,
             )
     else:
         warn = f"No signal. Message: {message.text}"
