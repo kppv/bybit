@@ -55,8 +55,12 @@ class EntryStrategy(OrderStrategy):
             take_profit=self.signal.order.profits[self.signal.tp_target - 1],
             stop_loss=self.signal.order.stop,
         )
-        self.client.place_order(order)
-        return order
+        try:
+            self.client.place_order(order)
+            return order
+        except Exception as e:
+            logger.error(f"Error during placing order: {e}")
+            return None
 
     def __calculate_quantity(self) -> float:
         usdt = (self.balance * self.signal.quantity_percent) / 100
@@ -67,7 +71,10 @@ class EntryStrategy(OrderStrategy):
         logger.info(f"Available balance: {self.balance}")
 
     def __set_leverage(self):
-        self.client.set_leverage(self.signal.order.pair, self.signal.order.leverage)
+        try:
+            self.client.set_leverage(self.signal.order.pair, self.signal.order.leverage)
+        except Exception as e:
+            logger.warning(f"Leverage not set to {self.signal.order.leverage}: {e}")
 
 
 class TakeProfitStrategy(OrderStrategy):

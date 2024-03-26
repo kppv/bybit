@@ -23,11 +23,6 @@ class OrderCategory(StrEnum):
     SPOT = ("SPOT",)
 
 
-class OrderCategory(StrEnum):
-    LINEAR = ("LINEAR",)
-    SPOT = ("SPOT",)
-
-
 class SignalOrder(BaseModel):
     pair: str
     type: OrderType

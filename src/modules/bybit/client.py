@@ -1,4 +1,3 @@
-from loguru import logger
 from pybit.unified_trading import HTTP
 
 from conf.settings import settings
@@ -45,12 +44,7 @@ class ByBitClient(ExchangeClient):
         if order.stop_loss:
             data["stopLoss"] = str(order.stop_loss)
 
-        try:
-            response = self.session.place_order(**data)
-        except Exception as e:
-            logger.error(f"Error during placing order: {e}")
-            return None
-        return response
+        return self.session.place_order(**data)
 
     def set_leverage(self, pair: str, leverage: int):
         self.session.set_leverage(

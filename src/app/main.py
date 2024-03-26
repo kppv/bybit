@@ -12,8 +12,8 @@ app = Client("my_account", settings.api_id, settings.api_hash)
 @app.on_message()
 async def handler(client: Client, message: Message):
     if message.chat.id == int(settings.chat_id):
-        logger.info(f"Message from {message.chat.id}: {message}")
-        await handle_signal(SignalMessage.from_orm(message))
+        logger.info(f"Message from {message.chat.id}: {message.text}")
+        await handle_signal(message, SignalMessage.from_orm(message))
 
 
 if __name__ == "__main__":
