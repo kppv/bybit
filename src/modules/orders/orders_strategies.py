@@ -34,10 +34,9 @@ class EntryStrategy(OrderStrategy):
 
     def create_order(self):
         if positions := self.__get_open_positions():
-            logger.warning(
-                f"There are open positions: {[position.symbol for position in positions]}"
-            )
-            return None
+            warn = f"There are open positions: {[position.symbol for position in positions]}"
+            logger.warning(warn)
+            raise RuntimeError(warn)
         else:
             self.__get_balance()
             self.__set_leverage()
@@ -61,7 +60,7 @@ class EntryStrategy(OrderStrategy):
             return order
         except Exception as e:
             logger.error(f"Error during placing order: {e}")
-            return None
+            raise e
 
     def __calculate_quantity(self) -> float:
         usdt = (self.balance * self.signal.quantity_percent) / 100
@@ -75,7 +74,7 @@ class EntryStrategy(OrderStrategy):
         try:
             self.client.set_leverage(self.signal.order.pair, self.signal.order.leverage)
         except Exception as e:
-            logger.warning(f"Leverage not set to {self.signal.order.leverage}: {e}")
+            raise RuntimeError(f"Leverage not set to {self.signal.order.leverage}: {e}")
 
 
 class TakeProfitStrategy(OrderStrategy):
