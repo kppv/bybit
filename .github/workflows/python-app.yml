@@ -51,5 +51,12 @@ jobs:
           export CHAT_ID=${{ secrets.CHAT_ID }}; \
           export BYBIT_APIKEY=${{ secrets.BYBIT_APIKEY }}; \
           export BYBIT_SECRET=${{ secrets.BYBIT_SECRET }}; \
-          docker-compose up --build -d
+          pwd
+          echo \$API_ID
+          "
+          
+          
+          bash -c " \
+                    cd /opt/bybit; \
+                    pwd
           "
