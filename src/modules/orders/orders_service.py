@@ -17,7 +17,7 @@ class OrderService:
             result = strategy.create_order()
             logger.info(f"Order was created: {result}")
         except Exception as e:
-            logger.exception("No order was created")
+            logger.error(f"No order was created: {e}")
             raise e
 
 
