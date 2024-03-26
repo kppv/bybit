@@ -8,6 +8,12 @@ services:
       dockerfile: Dockerfile
     labels:
       logging: "promtail"
+    environment:
+      - API_ID
+      - API_HASH
+      - CHAT_ID
+      - BYBIT_APIKEY
+      - BYBIT_SECRET
 
   grafana:
     image: grafana/grafana:latest
