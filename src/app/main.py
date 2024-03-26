@@ -6,7 +6,7 @@ from conf.settings import settings
 from models.dto import SignalMessage
 from modules.messages.handlers import handle_signal
 
-app = Client(name="my_account", api_id=settings.bot_app_id, api_hash=settings.api_hash)
+app = Client(name="my_account", api_id=settings.app_id, api_hash=settings.api_hash)
 
 
 @app.on_message()

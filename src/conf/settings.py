@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".envs/.env")
 
-    bot_app_id: str
+    app_id: str
     api_hash: str
     chat_id: str
 
