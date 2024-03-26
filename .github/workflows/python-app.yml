@@ -45,6 +45,7 @@ jobs:
       - name: run
         run: |          
           ssh ${{ secrets.USER_IP }} bash -c " \
+          cd /opt/bybit; \
           export BOT_APP_ID=${{ secrets.BOT_APP_ID }}; \
           export API_HASH=${{ secrets.API_HASH }}; \
           export CHAT_ID=${{ secrets.CHAT_ID }}; \
