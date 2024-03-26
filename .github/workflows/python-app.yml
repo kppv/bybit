@@ -40,7 +40,7 @@ jobs:
           ssh-keyscan -H ${{ secrets.IP }} >> ~/.ssh/known_hosts
       - name: clone
         run: |
-          ssh ${{ secrets.USER_IP }} "mkdir -p /opt/bybit && cd /opt/bybit"
+          ssh ${{ secrets.USER_IP }} "mkdir -p /opt/bybit"
           ssh ${{ secrets.USER_IP }} "git -C /opt/bybit pull || git clone https://github.com/kppv/bybit.git /opt/bybit"
       - name: run
         run: |          
@@ -51,5 +51,5 @@ jobs:
           export CHAT_ID=${{ secrets.CHAT_ID }} \
           export BYBIT_APIKEY=${{ secrets.BYBIT_APIKEY }} \
           export BYBIT_SECRET=${{ secrets.BYBIT_SECRET }} \
-          pwd
+          mkdir -p /opt/123
           "
