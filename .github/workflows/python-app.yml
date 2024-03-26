@@ -53,9 +53,3 @@ jobs:
           cd /opt/bybit && pwd; \
           echo \$API_ID
           "
-          
-          
-          bash -c " \
-                    cd /opt/bybit; \
-                    pwd
-          "
