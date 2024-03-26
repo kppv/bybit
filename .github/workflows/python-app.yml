@@ -40,11 +40,11 @@ jobs:
           ssh-keyscan -H ${{ secrets.IP }} >> ~/.ssh/known_hosts
       - name: clone
         run: |
-          ssh ${{ secrets.USER_IP }} "mkdir -p /opt/bybit"
-          ssh ${{ secrets.USER_IP }} "git -C /opt/bybit pull || git clone https://github.com/kppv/bybit.git /opt/bybit"
+          ssh -p ${{ secrets.PORT }} ${{ secrets.USER_IP }} "mkdir -p /opt/bybit"
+          ssh -p ${{ secrets.PORT }} ${{ secrets.USER_IP }} "git -C /opt/bybit pull || git clone https://github.com/kppv/bybit.git /opt/bybit"
       - name: run
         run: |          
-          ssh ${{ secrets.USER_IP }} bash -c " \
+          ssh -p ${{ secrets.PORT }} ${{ secrets.USER_IP }} bash -c " \
           echo "Start"; \
           export APP_ID=${{ secrets.APP_ID }}; \
           export API_HASH=${{ secrets.API_HASH }}; \
