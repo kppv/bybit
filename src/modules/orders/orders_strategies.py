@@ -54,6 +54,7 @@ class EntryStrategy(OrderStrategy):
             qty=self.__calculate_quantity(),
             take_profit=self.signal.order.profits[self.signal.tp_target - 1],
             stop_loss=self.signal.order.stop,
+            leverage=self.signal.order.leverage,
         )
         try:
             self.client.place_order(order)

@@ -38,6 +38,7 @@ jobs:
           echo "${{ secrets.SECRET_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.IP }} >> ~/.ssh/known_hosts
-      - name: mkdir
+      - name: clone
         run: |
-          ssh ${{ secrets.USER_IP }} "echo Hello"
+          ssh ${{ secrets.USER_IP }} "mkdir -p /opt/bybit && cd /opt/bybit"
+          ssh ${{ secrets.USER_IP }} "git -C /opt/bybit pull || git clone https://github.com/kppv/bybit.git /opt/bybit"
