@@ -42,3 +42,7 @@ jobs:
         run: |
           ssh ${{ secrets.USER_IP }} "mkdir -p /opt/bybit && cd /opt/bybit"
           ssh ${{ secrets.USER_IP }} "git -C /opt/bybit pull || git clone https://github.com/kppv/bybit.git /opt/bybit"
+      - name: run
+        run: |
+          ssh ${{ secrets.USER_IP }} "cd /opt/bybit"
+          ssh ${{ secrets.USER_IP }} "docker-compose up --build -d"
