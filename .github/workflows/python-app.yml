@@ -43,13 +43,13 @@ jobs:
           ssh ${{ secrets.USER_IP }} "mkdir -p /opt/bybit && cd /opt/bybit"
           ssh ${{ secrets.USER_IP }} "git -C /opt/bybit pull || git clone https://github.com/kppv/bybit.git /opt/bybit"
       - name: run
-        run: |
-          ssh ${{ secrets.USER_IP }} "cd /opt/bybit"
-      
-          ssh ${{ secrets.USER_IP }} "export API_ID=${{ secrets.API_ID }}"
-          ssh ${{ secrets.USER_IP }} "export API_HASH=${{ secrets.API_HASH }}"
-          ssh ${{ secrets.USER_IP }} "export CHAT_ID=${{ secrets.CHAT_ID }}"
-          ssh ${{ secrets.USER_IP }} "export BYBIT_APIKEY=${{ secrets.BYBIT_APIKEY }}"
-          ssh ${{ secrets.USER_IP }} "export BYBIT_SECRET=${{ secrets.BYBIT_SECRET }}"
-          
-          ssh ${{ secrets.USER_IP }} "pwd"
+        run: |          
+          ssh ${{ secrets.USER_IP }} bash -c " \
+          cd /opt/bybit \
+          export API_ID=${{ secrets.API_ID }} \
+          export API_HASH=${{ secrets.API_HASH }} \
+          export CHAT_ID=${{ secrets.CHAT_ID }} \
+          export BYBIT_APIKEY=${{ secrets.BYBIT_APIKEY }} \
+          export BYBIT_SECRET=${{ secrets.BYBIT_SECRET }} \
+          docker-compose up --build -d
+          "
