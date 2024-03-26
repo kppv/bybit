@@ -72,7 +72,10 @@ class EntryStrategy(OrderStrategy):
 
     def __set_leverage(self):
         logger.info(f"Try to set leverage:{self.signal.order.leverage}")
-        self.client.set_leverage(self.signal.order.pair, self.signal.order.leverage)
+        try:
+            self.client.set_leverage(self.signal.order.pair, self.signal.order.leverage)
+        except Exception as e:
+            logger.warning(f"Leverage not modified: {e}")
 
 
 class TakeProfitStrategy(OrderStrategy):
