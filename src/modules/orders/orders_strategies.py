@@ -34,9 +34,9 @@ class EntryStrategy(OrderStrategy):
 
     def create_order(self):
         if positions := self.__get_open_positions():
-            warn = f"There are open positions: {[position.symbol for position in positions]}"
-            logger.warning(warn)
-            raise RuntimeError(warn)
+            msg = f"There are open positions: {[position.symbol for position in positions]}"
+            logger.error(msg)
+            raise RuntimeError(msg)
         else:
             self.__get_balance()
             self.__set_leverage()
@@ -55,26 +55,24 @@ class EntryStrategy(OrderStrategy):
             stop_loss=self.signal.order.stop,
             leverage=self.signal.order.leverage,
         )
-        try:
-            self.client.place_order(order)
-            return order
-        except Exception as e:
-            logger.error(f"Error during placing order: {e}")
-            raise e
+        logger.info(f"Try to place order: {order}")
+        self.client.place_order(order)
+        return order
 
     def __calculate_quantity(self) -> float:
         usdt = (self.balance * self.signal.quantity_percent) / 100
-        return int(usdt / self.signal.order.entry)
+        qnt = int(usdt / self.signal.order.entry)
+        logger.info(f"Calculated quantity is {qnt}")
+        return qnt
 
     def __get_balance(self):
+        logger.info("Check balance...")
         self.balance = float(self.client.get_balance())
         logger.info(f"Available balance: {self.balance}")
 
     def __set_leverage(self):
-        try:
-            self.client.set_leverage(self.signal.order.pair, self.signal.order.leverage)
-        except Exception as e:
-            raise RuntimeError(f"Leverage not set to {self.signal.order.leverage}: {e}")
+        logger.info(f"Try to set leverage:{self.signal.order.leverage}")
+        self.client.set_leverage(self.signal.order.pair, self.signal.order.leverage)
 
 
 class TakeProfitStrategy(OrderStrategy):
