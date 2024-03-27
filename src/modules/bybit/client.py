@@ -58,7 +58,7 @@ class ByBitClient(ExchangeClient):
         response = self.session.get_positions(category="linear", symbol=pair)
         result = response["result"]["list"]
         if result:
-            return result[0]["leverage"]
+            return int(result[0]["leverage"])
 
     @staticmethod
     def __covert_type_to_side(order_type: str) -> str:
