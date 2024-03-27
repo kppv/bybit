@@ -53,7 +53,7 @@ class EntryStrategy(OrderStrategy):
         order = Order(
             category=OrderCategory.LINEAR,
             pair=self.signal.order.pair,
-            type=OrderType.BUY,
+            type=self.signal.order.type,
             qty=self.__calculate_quantity(),
             take_profit=self.signal.order.profits[self.signal.tp_target - 1],
             stop_loss=self.signal.order.stop,
