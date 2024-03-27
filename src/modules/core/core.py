@@ -18,3 +18,6 @@ class ExchangeClient(ABC):
 
     def set_leverage(self, pair: str, leverage: int):
         pass
+
+    def get_leverage(self, pair: str) -> int:
+        pass

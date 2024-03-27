@@ -54,6 +54,12 @@ class ByBitClient(ExchangeClient):
             category="linear",
         )
 
+    def get_leverage(self, pair: str) -> int:
+        response = self.session.get_positions(category="linear", symbol=pair)
+        result = response["result"]["list"]
+        if result:
+            return result[0]["leverage"]
+
     @staticmethod
     def __covert_type_to_side(order_type: str) -> str:
         if order_type == "BUY":

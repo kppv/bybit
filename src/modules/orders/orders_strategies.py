@@ -40,6 +40,7 @@ class EntryStrategy(OrderStrategy):
         else:
             self.__get_balance()
             self.__set_leverage()
+            self.__get_leverage()
             return self.__place_order()
 
     def __get_open_positions(self) -> list[Position]:
@@ -62,8 +63,11 @@ class EntryStrategy(OrderStrategy):
     def __calculate_quantity(self) -> float:
         usdt = (self.balance * self.signal.quantity_percent) / 100
         qnt = int(usdt / self.signal.order.entry)
-        logger.info(f"Calculated quantity is {qnt}")
-        return qnt
+        total = qnt * self.signal.order.leverage
+        logger.info(
+            f"Calculated quantity is {qnt}. With leverage: {self.signal.order.leverage} * {qnt} = {total}]"
+        )
+        return total
 
     def __get_balance(self):
         logger.info("Check balance...")
@@ -76,6 +80,9 @@ class EntryStrategy(OrderStrategy):
             self.client.set_leverage(self.signal.order.pair, self.signal.order.leverage)
         except Exception as e:
             logger.warning(f"Leverage not modified: {e}")
+
+    def __get_leverage(self):
+        self.signal.order.leverage = self.client.get_leverage(self.signal.order.pair)
 
 
 class TakeProfitStrategy(OrderStrategy):
