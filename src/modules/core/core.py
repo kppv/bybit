@@ -21,3 +21,6 @@ class ExchangeClient(ABC):
 
     def get_leverage(self, pair: str) -> int:
         pass
+
+    def get_last_price(self, pair: str) -> float:
+        pass

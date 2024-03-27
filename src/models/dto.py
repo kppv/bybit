@@ -90,3 +90,4 @@ class Order(BaseModel):
     take_profit: float | None = None
     stop_loss: float | None = None
     leverage: float = 1
+    last_price: float | None = None

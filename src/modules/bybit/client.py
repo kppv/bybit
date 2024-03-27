@@ -60,6 +60,12 @@ class ByBitClient(ExchangeClient):
         if result:
             return int(result[0]["leverage"])
 
+    def get_last_price(self, pair: str) -> float:
+        response = self.session.get_tickers(category="linear", symbol=pair)
+        result = response["result"]["list"]
+        if result:
+            return float(result[0]["lastPrice"])
+
     @staticmethod
     def __covert_type_to_side(order_type: str) -> str:
         if order_type == "BUY":

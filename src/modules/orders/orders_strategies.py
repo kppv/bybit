@@ -30,7 +30,9 @@ class OrderStrategy(ABC):
 
 
 class EntryStrategy(OrderStrategy):
-    balance: float = None
+    __balance: float = None
+    __last_leverage: int = 1
+    __last_price: float = 0
 
     def create_order(self):
         if positions := self.__get_open_positions():
@@ -41,6 +43,7 @@ class EntryStrategy(OrderStrategy):
             self.__get_balance()
             self.__set_leverage()
             self.__get_leverage()
+            self.__get_last_price()
             return self.__place_order()
 
     def __get_open_positions(self) -> list[Position]:
@@ -54,25 +57,25 @@ class EntryStrategy(OrderStrategy):
             qty=self.__calculate_quantity(),
             take_profit=self.signal.order.profits[self.signal.tp_target - 1],
             stop_loss=self.signal.order.stop,
-            leverage=self.signal.order.leverage,
+            leverage=self.__last_leverage,
         )
         logger.info(f"Try to place order: {order}")
         self.client.place_order(order)
         return order
 
     def __calculate_quantity(self) -> float:
-        usdt = (self.balance * self.signal.quantity_percent) / 100
-        qnt = int(usdt / self.signal.order.entry)
-        total = qnt * self.signal.order.leverage
+        usdt = (self.__balance * self.signal.quantity_percent) / 100
+        qnt = int(usdt / self.__last_price)
+        total = qnt * self.__last_leverage
         logger.info(
-            f"Calculated quantity is {qnt}. With leverage: {self.signal.order.leverage} * {qnt} = {total}]"
+            f"Calculated quantity is {qnt}. With leverage: {self.__last_leverage} * {qnt} = {total}]"
         )
         return total
 
     def __get_balance(self):
         logger.info("Check balance...")
-        self.balance = float(self.client.get_balance())
-        logger.info(f"Available balance: {self.balance}")
+        self.__balance = float(self.client.get_balance())
+        logger.info(f"Available balance: {self.__balance}")
 
     def __set_leverage(self):
         logger.info(f"Try to set leverage:{self.signal.order.leverage}")
@@ -82,7 +85,10 @@ class EntryStrategy(OrderStrategy):
             logger.warning(f"Leverage not modified: {e}")
 
     def __get_leverage(self):
-        self.signal.order.leverage = self.client.get_leverage(self.signal.order.pair)
+        self.__last_leverage = self.client.get_leverage(self.signal.order.pair)
+
+    def __get_last_price(self):
+        self.__last_price = self.client.get_last_price(self.signal.order.pair)
 
 
 class TakeProfitStrategy(OrderStrategy):
