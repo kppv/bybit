@@ -58,6 +58,7 @@ class EntryStrategy(OrderStrategy):
             take_profit=self.signal.order.profits[self.signal.tp_target - 1],
             stop_loss=self.signal.order.stop,
             leverage=self.__last_leverage,
+            last_price=self.__last_price,
         )
         logger.info(f"Try to place order: {order}")
         self.client.place_order(order)

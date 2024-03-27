@@ -67,6 +67,20 @@ def test_parse_custom_entry_signal():
     assert entry.quantity_percent == 54
 
 
+def test_parse_custom_entry_signal_upper_case():
+    msg = ENTRY_SIGNAL_MESSAGE.copy()
+    msg["text"] = "STart 3 54"
+    entry = MessageParser.parse_entry_signal(SignalMessage(**msg))
+    assert entry.order.pair == "GALAUSDT"
+    assert entry.order.type == OrderType.BUY
+    assert entry.order.entry == 0.0459
+    assert entry.order.stop == 0.042228
+    assert entry.order.profits == [0.046818, 0.047736, 0.049572, 0.051408]
+    assert entry.price == 0
+    assert entry.tp_target == 3
+    assert entry.quantity_percent == 54
+
+
 def test_message_is_take_profit_signal():
     signal = MessageParser.get_signal(SignalMessage(**TAKE_PROFIT_MESSAGE))
     assert type(signal) is TakeProfitSignal

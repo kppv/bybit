@@ -73,7 +73,7 @@ class MessageParser:
     def __find_target(text):
         patterns = [r"Take-Profit target (\d+)", r"start (\d+)"]
         for pattern in patterns:
-            if match := re.search(pattern, text):
+            if match := re.search(pattern, text, re.IGNORECASE):
                 return match.group(1)
         return 1
 
@@ -81,7 +81,7 @@ class MessageParser:
     def __find_price(text):
         try:
             pattern = r"Average Entry Price: ([\d.]+)"
-            match = re.search(pattern, text)
+            match = re.search(pattern, text, re.IGNORECASE)
             return match.group(1)
         except Exception as e:
             return 0
@@ -89,7 +89,7 @@ class MessageParser:
     @staticmethod
     def __find_quantity(text):
         pattern = r"start (\d+) (\d+)"
-        if match := re.search(pattern, text):
+        if match := re.search(pattern, text, re.IGNORECASE):
             return match.group(2)
         return settings.default_quantity_percent
 
