@@ -22,8 +22,8 @@ services:
     volumes:
       - ./.grafana/grafana-datasources.yml:/etc/grafana/provisioning/datasources/datasources.yaml
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=Qf9efT
+      - GF_SECURITY_ADMIN_USER
+      - GF_SECURITY_ADMIN_PASSWORD
 
   loki:
     image: grafana/loki:latest
