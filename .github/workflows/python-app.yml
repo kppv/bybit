@@ -49,6 +49,7 @@ jobs:
           export APP_ID=${{ secrets.APP_ID }}; \
           export API_HASH=${{ secrets.API_HASH }}; \
           export CHAT_ID=${{ secrets.CHAT_ID }}; \
+          export REPLY_CHAT_ID=${{ secrets.REPLY_CHAT_ID }}; \
           export BYBIT_APIKEY=${{ secrets.BYBIT_APIKEY }}; \
           export BYBIT_SECRET=${{ secrets.BYBIT_SECRET }}; \
           export GF_SECURITY_ADMIN_USER=${{ secrets.GF_SECURITY_ADMIN_USER }}; \
