@@ -75,7 +75,7 @@ class MessageParser:
         for pattern in patterns:
             if match := re.search(pattern, text, re.IGNORECASE):
                 return match.group(1)
-        return 1
+        return 2
 
     @staticmethod
     def __find_price(text):

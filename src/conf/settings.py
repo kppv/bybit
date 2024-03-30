@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     api_hash: str
     chat_id: str
 
+    reply_chat_id: str
+
     bybit_url: str
     bybit_apikey: str
     bybit_secret: str

@@ -10,7 +10,6 @@ from models.dto import (
     Position,
     BaseSignal,
     Order,
-    OrderType,
     OrderCategory,
 )
 from modules.core.core import ExchangeClient
@@ -94,7 +93,7 @@ class EntryStrategy(OrderStrategy):
 
 class TakeProfitStrategy(OrderStrategy):
     def create_order(self):
-        print("Take Profit")
+        raise NotImplementedError("TakeProfitStrategy not implemented")
 
 
 __STRATEGIES = {
