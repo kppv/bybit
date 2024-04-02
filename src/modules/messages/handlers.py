@@ -13,21 +13,24 @@ async def handle_signal(client: Client, origin: Message, message: SignalMessage)
         try:
             result = order_service.make_order_by_signal(signal)
             await client.send_message(
-                text=f"Order was created:\n```json\n{result.json()}\n```",
+                text=f"Order was created\n"
+                f"Origin:\n"
+                f"```\n{message.text}\n```"
+                f"Order:"
+                f"```json\n{result.json()}\n```",
                 reply_to_message_id=origin.id,
                 chat_id=int(settings.reply_chat_id),
             )
         except Exception as e:
             await client.send_message(
-                text=f"Order was not created\n```\n{e}\n```",
+                text=f"Order was not created\n"
+                f"Origin:\n"
+                f"```\n{message.text}\n```"
+                f"Error:\n"
+                f"```\n{e}\n```",
                 reply_to_message_id=origin.id,
                 chat_id=int(settings.reply_chat_id),
             )
     else:
         warn = f"No signal. Message: {message.text}"
         logger.warning(warn)
-        await client.send_message(
-            chat_id=int(settings.reply_chat_id),
-            text=warn,
-            reply_to_message_id=origin.id,
-        )
