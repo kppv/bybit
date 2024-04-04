@@ -34,7 +34,7 @@ class EntryStrategy(OrderStrategy):
     __last_price: float = 0
 
     def create_order(self):
-        if positions := self.__get_open_positions():
+        if (positions := self.__get_open_positions()) and len(positions) > 1:
             msg = f"There are open positions: {[position.symbol for position in positions]}"
             logger.error(msg)
             raise RuntimeError(msg)
