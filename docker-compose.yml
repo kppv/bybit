@@ -15,6 +15,7 @@ services:
       - BYBIT_APIKEY
       - BYBIT_SECRET
       - REPLY_CHAT_ID
+      - MAX_POSITIONS
 
   grafana:
     image: grafana/grafana:latest

@@ -16,9 +16,10 @@ from modules.core.core import ExchangeClient
 
 
 class OrderStrategy(ABC):
-    def __init__(self, signal: BaseSignal, client: ExchangeClient):
+    def __init__(self, signal: BaseSignal, client: ExchangeClient, **kwargs):
         self.client = client
         self.signal = signal
+        self.kwargs = kwargs
         logger.info(
             f"Created strategy: {type(self).__name__}. Exchange client: {type(self.client).__name__}"
         )
@@ -34,7 +35,9 @@ class EntryStrategy(OrderStrategy):
     __last_price: float = 0
 
     def create_order(self):
-        if (positions := self.__get_open_positions()) and len(positions) > 1:
+        if (positions := self.__get_open_positions()) and len(
+            positions
+        ) > self.kwargs.get("max_positions"):
             msg = f"There are open positions: {[position.symbol for position in positions]}"
             logger.error(msg)
             raise RuntimeError(msg)
@@ -102,5 +105,5 @@ __STRATEGIES = {
 }
 
 
-def get_strategy(signal, client) -> OrderStrategy:
-    return __STRATEGIES[type(signal)](signal, client)
+def get_strategy(signal, client, **kwargs) -> OrderStrategy:
+    return __STRATEGIES[type(signal)](signal, client, **kwargs)

@@ -9,7 +9,8 @@ class Settings(BaseSettings):
 
     app_id: str
     api_hash: str
-    chat_id: str
+    chat_id: list[int]
+    max_positions: int
 
     reply_chat_id: str
 
