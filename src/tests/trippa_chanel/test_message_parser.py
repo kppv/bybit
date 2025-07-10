@@ -4,7 +4,7 @@ from models.dto import (
     SignalMessage,
     TakeProfitSignal,
 )
-from modules.messages.parsers import MessageParser
+from modules.parser.trippa_parser import trippa_message_parser
 
 MSG = """
 👉 Pair: KAVA/USDT
@@ -22,7 +22,7 @@ MSG = """
 
 
 def test_parse_signal_order():
-    signal = MessageParser.parse_signal_order(MSG)
+    signal = trippa_message_parser._parse_order_data(MSG)
     assert signal.pair == "KAVAUSDT"
     assert signal.type == OrderType.BUY
     assert signal.entry == 0.9717
@@ -32,7 +32,7 @@ def test_parse_signal_order():
 
 
 def test_parse_take_profit_signal():
-    take_profit = MessageParser.parse_take_profit_signal(
+    take_profit = trippa_message_parser._parse_take_profit_signal(
         SignalMessage(**TAKE_PROFIT_MESSAGE)
     )
     assert take_profit.order.pair == "GALAUSDT"
@@ -44,7 +44,9 @@ def test_parse_take_profit_signal():
 
 
 def test_parse_entry_signal():
-    entry = MessageParser.parse_entry_signal(SignalMessage(**ENTRY_SIGNAL_MESSAGE))
+    entry = trippa_message_parser._parse_entry_signal(
+        SignalMessage(**ENTRY_SIGNAL_MESSAGE)
+    )
     assert entry.order.pair == "GALAUSDT"
     assert entry.order.type == OrderType.BUY
     assert entry.order.entry == 0.0459
@@ -56,7 +58,7 @@ def test_parse_entry_signal():
 def test_parse_custom_entry_signal():
     msg = ENTRY_SIGNAL_MESSAGE.copy()
     msg["text"] = "start 3 54"
-    entry = MessageParser.parse_entry_signal(SignalMessage(**msg))
+    entry = trippa_message_parser._parse_entry_signal(SignalMessage(**msg))
     assert entry.order.pair == "GALAUSDT"
     assert entry.order.type == OrderType.BUY
     assert entry.order.entry == 0.0459
@@ -70,7 +72,7 @@ def test_parse_custom_entry_signal():
 def test_parse_custom_entry_signal_upper_case():
     msg = ENTRY_SIGNAL_MESSAGE.copy()
     msg["text"] = "STart 3 54"
-    entry = MessageParser.parse_entry_signal(SignalMessage(**msg))
+    entry = trippa_message_parser._parse_entry_signal(SignalMessage(**msg))
     assert entry.order.pair == "GALAUSDT"
     assert entry.order.type == OrderType.BUY
     assert entry.order.entry == 0.0459
@@ -82,12 +84,12 @@ def test_parse_custom_entry_signal_upper_case():
 
 
 def test_message_is_take_profit_signal():
-    signal = MessageParser.get_signal(SignalMessage(**TAKE_PROFIT_MESSAGE))
+    signal = trippa_message_parser.get_signal(SignalMessage(**TAKE_PROFIT_MESSAGE))
     assert type(signal) is TakeProfitSignal
 
 
 def test_other_message():
-    signal = MessageParser.get_signal(
+    signal = trippa_message_parser.get_signal(
         SignalMessage(**{"id": 1, "text": "Some other message \n with \n new lines"})
     )
     assert signal is None

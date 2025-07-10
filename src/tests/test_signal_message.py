@@ -1,4 +1,4 @@
-from messages_data import *
+from trippa_chanel.messages_data import *
 from models.dto import SignalMessage
 
 

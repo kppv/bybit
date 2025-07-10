@@ -4,32 +4,31 @@ from loguru import logger
 
 from conf.settings import settings
 from models.dto import (
-    SignalOrder,
+    OrderData,
     OrderType,
     SignalMessage,
     TakeProfitSignal,
     EntrySignal,
     BaseSignal,
 )
+from modules.parser.message_parser import MessageParser
 
 
-class MessageParser:
-    @staticmethod
-    def get_signal(message: SignalMessage) -> BaseSignal | None:
+class TrippaMessageParser(MessageParser):
+    def get_signal(self, message: SignalMessage) -> BaseSignal | None:
         try:
             if "Take-Profit target" in message.text:
-                return MessageParser.parse_take_profit_signal(message)
+                return self._parse_take_profit_signal(message)
             elif any(
                 keyword.lower() in message.text.lower()
                 for keyword in ("all entry targets achieved", "start")
             ):
-                return MessageParser.parse_entry_signal(message)
+                return self._parse_entry_signal(message)
         except Exception as e:
             logger.error(f"Error while parsing message: {e}")
             return None
 
-    @staticmethod
-    def parse_signal_order(text: str) -> SignalOrder:
+    def _parse_order_data(self, text: str) -> OrderData:
         lines = text.split("\n")
         signal_data = {}
         for line in lines:
@@ -48,24 +47,22 @@ class MessageParser:
                     signal_data["profits"] = []
                 signal_data["profits"].append(float(line.split(":")[1].strip()))
 
-        return SignalOrder(**signal_data)
+        return OrderData(**signal_data)
 
-    @staticmethod
-    def parse_take_profit_signal(message: SignalMessage) -> TakeProfitSignal:
-        order = MessageParser.parse_signal_order(message.reply_to_message.text)
+    def _parse_take_profit_signal(self, message: SignalMessage) -> TakeProfitSignal:
+        order = self._parse_order_data(message.reply_to_message.text)
         take_profit = TakeProfitSignal(
-            order=order, target=MessageParser.__find_target(message.text)
+            order=order, target=self.__find_target(message.text)
         )
         return take_profit
 
-    @staticmethod
-    def parse_entry_signal(message: SignalMessage) -> EntrySignal:
-        order = MessageParser.parse_signal_order(message.reply_to_message.text)
+    def _parse_entry_signal(self, message: SignalMessage) -> EntrySignal:
+        order = self._parse_order_data(message.reply_to_message.text)
         entry = EntrySignal(
-            tp_target=MessageParser.__find_target(message.text),
+            tp_target=self.__find_target(message.text),
             order=order,
-            price=MessageParser.__find_price(message.text),
-            quantity_percent=MessageParser.__find_quantity(message.text),
+            price=self.__find_price(message.text),
+            quantity_percent=self.__find_quantity(message.text),
         )
         return entry
 
@@ -94,4 +91,4 @@ class MessageParser:
         return settings.default_quantity_percent
 
 
-message_parser = MessageParser()
+trippa_message_parser = TrippaMessageParser()

@@ -37,7 +37,7 @@ class EntryStrategy(OrderStrategy):
     def create_order(self):
         if (positions := self.__get_open_positions()) and len(
             positions
-        ) > self.kwargs.get("max_positions"):
+        ) >= self.kwargs.get("max_positions"):
             msg = f"There are open positions: {[position.symbol for position in positions]}"
             logger.error(msg)
             raise RuntimeError(msg)

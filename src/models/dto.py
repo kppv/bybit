@@ -23,7 +23,7 @@ class OrderCategory(StrEnum):
     SPOT = ("SPOT",)
 
 
-class SignalOrder(BaseModel):
+class OrderData(BaseModel):
     pair: str
     type: OrderType
     entry: float
@@ -33,7 +33,7 @@ class SignalOrder(BaseModel):
 
 
 class BaseSignal(BaseModel):
-    order: SignalOrder
+    order: OrderData
 
 
 class EntrySignal(BaseSignal):
