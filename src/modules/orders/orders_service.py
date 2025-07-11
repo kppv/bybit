@@ -17,7 +17,7 @@ class OrderService:
         try:
             logger.info(f"Strategy [{type(strategy).__name__}] try to create order")
             result = strategy.create_order()
-            logger.info(f"Order was created: {result}")
+            logger.info(f"Order has been created: {result}")
             return result
         except Exception as e:
             logger.error(f"No order was created: {e}")
